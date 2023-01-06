@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { FC } from "react";
+import React, { FC, useRef } from "react";
 import Logo from "./Logo";
 import { RiMenuFoldLine, RiMenuUnfoldLine } from "react-icons/ri";
 import { IconType } from "react-icons";
@@ -13,6 +13,7 @@ interface Props {
 const AdminNav: FC<Props> = ({ navItems }): JSX.Element => {
   const { visibility, toggleVisibility } = useNavVisibility();
   const [mounted, setMounted] = React.useState(false);
+  const ref = useRef(null);
 
   React.useEffect(() => {
     setMounted(true);
@@ -20,6 +21,7 @@ const AdminNav: FC<Props> = ({ navItems }): JSX.Element => {
 
   return mounted ? (
     <nav
+      ref={ref}
       className={[
         "h-screen shadow-sm bg-primaryBg text-onPrimary flex flex-col justify-between transition-width overflow-hidden sticky top-0",
         visibility ? "w-60" : "w-12",

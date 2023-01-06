@@ -1,23 +1,15 @@
 import { NextApiHandler } from "next";
 import formidable from "formidable";
+import cloudinary from "../../cloudinary";
+import dbConnect from "../../db-connection";
 import { readFile } from "../../../lib/utils/readFile";
 import Post from "../../../models/Post";
-import dbConnect from "../../db-connection";
+import { IncomingPost } from "../../../core/entities/post";
 import {
   errorMessages,
   postValidationSchema,
   validateSchema,
 } from "./validatePost";
-import cloudinary from "../../cloudinary";
-
-export interface IncomingPost {
-  title: string;
-  meta: string;
-  slug: string;
-  content: string;
-  tags?: string;
-  thumbnail?: string;
-}
 
 const createPost: NextApiHandler = async (req, res) => {
   const { files, body } = await readFile<IncomingPost>(req);

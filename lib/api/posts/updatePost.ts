@@ -3,7 +3,7 @@ import formidable from "formidable";
 import Post from "../../../models/Post";
 import cloudinary from "../../cloudinary";
 import { readFile } from "../../utils/readFile";
-import { IncomingPost } from "./createPost";
+import { IncomingPost } from "../../../core/entities/post";
 import { postValidationSchema, validateSchema } from "./validatePost";
 
 const updatePost: NextApiHandler = async (req, res) => {
