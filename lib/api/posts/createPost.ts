@@ -10,8 +10,17 @@ import {
 } from "./validatePost";
 import cloudinary from "../../cloudinary";
 
+export interface IncomingPost {
+  title: string;
+  meta: string;
+  slug: string;
+  content: string;
+  tags?: string;
+  thumbnail?: string;
+}
+
 const createPost: NextApiHandler = async (req, res) => {
-  const { files, body } = await readFile(req);
+  const { files, body } = await readFile<IncomingPost>(req);
   const { title, content, slug, meta } = body;
 
   let tags = [];

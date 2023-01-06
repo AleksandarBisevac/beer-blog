@@ -18,6 +18,7 @@ import ThumbnailSelector from "./thumbnail-selector";
 import useSticky from "../../core/hooks/useSticky";
 
 export interface FinalPost extends SEOResult {
+  id?: string;
   title: string;
   content: string;
   thumbnail?: File | string;
