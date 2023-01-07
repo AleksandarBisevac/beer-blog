@@ -9,9 +9,15 @@ interface Props {
   post: PostDetails;
   busy?: boolean;
   onDeleteClick?: () => void;
+  controls?: boolean;
 }
 
-const PostCard: FC<Props> = ({ post, busy, onDeleteClick }): JSX.Element => {
+const PostCard: FC<Props> = ({
+  post,
+  busy,
+  onDeleteClick,
+  controls = false,
+}): JSX.Element => {
   const { thumbnail, createdAt, tags, title, meta, slug } = post;
 
   return (
@@ -24,6 +30,9 @@ const PostCard: FC<Props> = ({ post, busy, onDeleteClick }): JSX.Element => {
               fill={true}
               alt="thumbnail"
               style={{ objectFit: "cover" }}
+              sizes="(max-width: 768px) 100vw,
+              (max-width: 1200px) 50vw,
+              33vw"
             />
           ) : (
             <div className="w-full h-full bg-primary text-onPrimaryBg opacity-50">
@@ -63,7 +72,7 @@ const PostCard: FC<Props> = ({ post, busy, onDeleteClick }): JSX.Element => {
       <div className="flex justify-end items-center space-x-2 mb-4 mr-4">
         {busy ? (
           <span className="animate-pulse">Removing...</span>
-        ) : (
+        ) : controls ? (
           <>
             <Link
               href={"/admin/posts/update/" + slug}
@@ -78,7 +87,7 @@ const PostCard: FC<Props> = ({ post, busy, onDeleteClick }): JSX.Element => {
               Delete
             </button>{" "}
           </>
-        )}
+        ) : null}
       </div>
     </div>
   );

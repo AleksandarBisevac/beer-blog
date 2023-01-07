@@ -22,7 +22,8 @@ const createPost: NextApiHandler = async (req, res) => {
 
   await dbConnect();
   const alreadyExists = await Post.findOne({ slug: body.slug });
-  if (alreadyExists)
+
+  if (!!alreadyExists)
     return res.status(400).json({ error: errorMessages.SLUG_IS_NOT_UNIQUE });
 
   const error = validateSchema(postValidationSchema, { ...body, tags });
