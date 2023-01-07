@@ -8,6 +8,7 @@ interface UseInfiniteScrollProps {
 
 function useInfiniteScroll({ fetchFunc, shouldFetch }: UseInfiniteScrollProps) {
   const [isFetching, setIsFetching] = useState(false);
+  const debouncedFetchFunc = debounce(fetchFunc, 500);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -36,16 +37,12 @@ function useInfiniteScroll({ fetchFunc, shouldFetch }: UseInfiniteScrollProps) {
 
     if (scrollTop + windowHeight >= currentDocumentHeight && shouldFetch) {
       debouncedFetchFunc();
-    }
-
-    if (currentDocumentHeight > previousDocumentHeight && shouldFetch) {
+    } else if (currentDocumentHeight > previousDocumentHeight && shouldFetch) {
       debouncedFetchFunc();
     }
   }, [shouldFetch]);
 
-  const debouncedFetchFunc = debounce(fetchFunc, 500);
-
-  return [isFetching, setIsFetching];
+  return { isFetching, setIsFetching };
 }
 
 export default useInfiniteScroll;

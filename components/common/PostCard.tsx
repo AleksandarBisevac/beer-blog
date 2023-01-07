@@ -35,7 +35,7 @@ const PostCard: FC<Props> = ({
               33vw"
             />
           ) : (
-            <div className="w-full h-full bg-primary text-onPrimaryBg opacity-50">
+            <div className="w-full h-full bg-gray-400 text-onPrimaryBg opacity-50">
               <div className="flex flex-col items-center justify-center h-full animate-pulse">
                 <MdImageNotSupported size={80} />
                 <span className="text-xl font-bold">No Image</span>

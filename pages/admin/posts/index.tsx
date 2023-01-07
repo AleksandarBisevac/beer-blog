@@ -3,14 +3,16 @@ import {
   InferGetServerSidePropsType,
   NextPage,
 } from "next";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import { BsFillArrowDownCircleFill } from "react-icons/bs";
 import PostCard from "../../../components/common/PostCard";
 import AdminLayout from "../../../components/layout/AdminLayout";
 import { PostDetails } from "../../../core/entities/post";
 import formatPosts from "../../../lib/api/posts/formatPosts";
 import { readPostsFromDb } from "../../../lib/api/posts/readPosts";
 import useInfiniteScroll from "../../../core/hooks/useInfiniteScroll";
+import Loading from "../../../components/common/Loading";
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
@@ -22,32 +24,46 @@ const Posts: NextPage<Props> = ({ posts }) => {
   const [hasMorePost, setHasMorePosts] = useState(true);
   const postsLength = useRef(posts.length);
 
+  const { isFetching, setIsFetching } = useInfiniteScroll({
+    fetchFunc: fetchMorePosts,
+    shouldFetch: hasMorePost,
+  });
+
   const incrementPageNumber = (pgnumber: number) => {
     if (pgnumber * limit < postsLength.current) {
       pageNumber++;
       return true;
     }
+    setIsFetching(false);
     return false;
   };
 
-  const fetchMorePosts = async () => {
-    if (!incrementPageNumber(pageNumber)) return setHasMorePosts(false);
+  useEffect(() => {
+    return () => {
+      pageNumber = 0;
+    };
+  }, []);
 
-    const { data } = await axios(
-      `/api/posts?limit=${limit}&pageNumber=${pageNumber}`
-    );
-    setPostsToRender((prev) => [...prev, ...data.posts]);
-    postsLength.current += data.posts.length;
-    if (data.posts.length < limit) {
-      setHasMorePosts(false);
-      return;
+  async function fetchMorePosts() {
+    if (!incrementPageNumber(pageNumber)) {
+      return setHasMorePosts(false);
     }
-  };
-
-  const [isFetching, setIsFetching] = useInfiniteScroll({
-    fetchFunc: fetchMorePosts,
-    shouldFetch: hasMorePost,
-  });
+    try {
+      setIsFetching(true);
+      const { data } = await axios(
+        `/api/posts?limit=${limit}&pageNumber=${pageNumber}`
+      );
+      setPostsToRender((prev) => [...prev, ...data.posts]);
+      postsLength.current += data.posts.length;
+      if (data.posts.length < limit) {
+        setHasMorePosts(false);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsFetching(false);
+    }
+  }
 
   return (
     <AdminLayout title="Posts">
@@ -58,6 +74,13 @@ const Posts: NextPage<Props> = ({ posts }) => {
           ))}
         </div>
       </div>
+      {isFetching && (
+        <Loading
+          icon={BsFillArrowDownCircleFill}
+          textColor="text-primaryBg"
+          size="3xl"
+        />
+      )}
     </AdminLayout>
   );
 };
