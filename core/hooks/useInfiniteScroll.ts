@@ -36,12 +36,6 @@ function useInfiniteScroll({ fetchFunc, shouldFetch }: UseInfiniteScrollProps) {
       html.offsetHeight
     );
 
-    console.log({ scrollTop });
-    console.log({ windowHeight });
-    console.log({ shouldFetch });
-    console.log({ currentDocumentHeight });
-    console.log({ previousDocumentHeight });
-
     if (scrollTop + windowHeight >= currentDocumentHeight && shouldFetch) {
       debouncedFetchFunc();
     } else if (currentDocumentHeight > previousDocumentHeight && shouldFetch) {
