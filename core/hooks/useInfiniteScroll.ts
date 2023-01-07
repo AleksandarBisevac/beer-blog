@@ -16,7 +16,8 @@ function useInfiniteScroll({ fetchFunc, shouldFetch }: UseInfiniteScrollProps) {
   }, []);
 
   const handleScroll = useCallback(() => {
-    const scrollTop = window.pageYOffset;
+    // I needed to round this value because on second scroll to top, on Mac was 0.5 shorter ??!!
+    const scrollTop = Math.ceil(window.pageYOffset);
     const windowHeight = window.innerHeight;
     const body = document.body;
     const html = document.documentElement;
@@ -34,6 +35,12 @@ function useInfiniteScroll({ fetchFunc, shouldFetch }: UseInfiniteScrollProps) {
       html.scrollHeight,
       html.offsetHeight
     );
+
+    console.log({ scrollTop });
+    console.log({ windowHeight });
+    console.log({ shouldFetch });
+    console.log({ currentDocumentHeight });
+    console.log({ previousDocumentHeight });
 
     if (scrollTop + windowHeight >= currentDocumentHeight && shouldFetch) {
       debouncedFetchFunc();
