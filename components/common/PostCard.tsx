@@ -21,7 +21,7 @@ const PostCard: FC<Props> = ({
   const { thumbnail, createdAt, tags, title, meta, slug } = post;
 
   return (
-    <div className="flex flex-col justify-between rounded-lg bg-neutral text-onNeutral shadow-lg hover:shadow-xl overflow-hidden">
+    <div className="flex flex-col max-h-content justify-between rounded-lg bg-neutral text-onNeutral shadow-md hover:z-10 hover:shadow-xl overflow-hidden transition-all ease-in-out hover:-mt-2 hover:mb-2 hover:-mr-2 hover:ml-2  hover:bg-onNeutral hover:text-neutral duration-150">
       <Link href={"/admin/posts/" + slug}>
         <div className="aspect-video relative">
           {thumbnail ? (
@@ -66,7 +66,7 @@ const PostCard: FC<Props> = ({
               ))}
             </div>
           </div>
-          <p className=" text-gray-700 text-base">{trimText(meta, 75)}</p>
+          <p className="text-base">{trimText(meta, 75)}</p>
         </div>
       </Link>
       <div className="flex justify-end items-center space-x-2 mb-4 mr-4">

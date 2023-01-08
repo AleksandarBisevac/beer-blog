@@ -67,8 +67,8 @@ const Posts: NextPage<Props> = ({ posts }) => {
 
   return (
     <AdminLayout title="Posts">
-      <div className="mx-auto p-3 max-w-6xl">
-        <div className="grid grid-cols-1 xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4">
+      <div className="mx-auto py-3 px-6 max-w-6xl ">
+        <div className="grid grid-cols-1 xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-8">
           {postsToRender.map((post) => (
             <PostCard post={post} key={post.slug} />
           ))}
